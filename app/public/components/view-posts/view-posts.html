@@ -1,0 +1,104 @@
+
+
+  <div class="dropdown form-inline">
+    <div class="pull-right">
+      <p><a class="btn btn-info" ng-click="$ctrl.postForm = !$ctrl.postForm">New Post</a></p>
+    </div>
+    <input type="search" class="form-control input-sm search-form" placeholder="Filter" ng-model="query.title">
+
+  <div class="dropdown form-inline" ng-init="sort='-vote_count' ; sortName='Votes'">
+    <a href="#"
+    class="dropdown-toggle"
+    data-toggle="dropdown"
+    role="button"
+    aria-haspopup="true"
+    aria-expanded="false">Sort By {{sortName}}<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="#" ng-click="sort='-vote_count' ; sortName='Votes'">Votes</a></li>
+      <li><a href="#" ng-click="sort='date' ; sortName='Date'">Date</a></li>
+      <li><a href="#" ng-click="sort='title' ; sortName='Title'">Title</a></li>
+    </ul>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-8">
+
+    <form name="form" ng-if="$ctrl.postForm">
+      <div ng-class="{'has-error': form.title.$invalid && form.title.$touched, 'has-success' : form.title.$valid && form.title.$touched}">
+        <label for="title">Title</label>
+        <input id="title" name="title" class="form-control" ng-model="$ctrl.post.title" ng-minlength="5" required>
+      </div>
+      <div ng-class="{'has-error': form.post.$invalid && form.post.$touched, 'has-success' : form.post.$valid && form.post.$touched}">
+        <label for="body">Body</label>
+        <textarea id="body" name="post" class="form-control" ng-model="$ctrl.post.body" ng-minlength="5" required></textarea>
+      </div>
+      <div ng-class="{'has-error': form.author.$invalid && form.author.$touched, 'has-success' : form.author.$valid && form.author.$touched}">
+        <label for="author">Author</label>
+        <input id="author" name="author" class="form-control" ng-model="$ctrl.post.author" ng-minlength="5" required>
+      </div>
+      <div ng-class="{'has-error': form.image_url.$invalid && form.image_url.$touched, 'has-success' : form.image_url.$valid && form.image_url.$touched}">
+        <label for="image-url">Image URL</label>
+        <input id="image-url" name="image_url" class="form-control" type="url" ng-model="$ctrl.post.image_url">
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" ng-click="$ctrl.newPost()" ng-disabled="form.$invalid">
+          Create Post
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<div class="row" ng-repeat="post in $ctrl.posts | filter:query | orderBy: sort ">
+  <div class="col-md-12">
+
+    <div class="well">
+      <div class="media-left">
+        <img class="media-object" src="{{post.image_url}}">
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">
+          {{post.title}}
+          <a ng-click="$ctrl.upVote(post)"><i class="glyphicon glyphicon-arrow-up"></i></a>
+          <a ng-click="$ctrl.downVote(post)"><i class="glyphicon glyphicon-arrow-down"></i></a>
+          {{post.vote_count}}
+        </h4>
+        <div class="text-right">
+          {{post.author}}
+        </div>
+        <p>
+          {{post.body}}
+        </p>
+        <div>
+          <i class="glyphicon glyphicon-comment"></i>
+          <a ng-click="post.commentForm = !post.commentForm">
+            {{post.comments.length || 0}} Comments
+          </a>
+          | <a ui-sref="edit({id : post.id})">edit</a>
+        </div>
+        <div class="row">
+          <div class="col-md-offset-1" ng-if="post.commentForm">
+            <hr>
+            <p ng-repeat="comment in post.comments">
+              {{comment.content}}
+            </p>
+            <form class="form-inline">
+              <div class="form-group">
+                <input class="form-control" ng-model="post.comment">
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary" ng-click="$ctrl.newComment(post)">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

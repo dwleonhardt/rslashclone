@@ -1,0 +1,24 @@
+<form name="edit">
+  <div ng-class="{'has-error': form.title.$invalid && form.title.$touched, 'has-success' : form.title.$valid && form.title.$touched}">
+    <label for="title">Title</label>
+    <input id="title" name="title" class="form-control" ng-model="$ctrl.post.title" ng-minlength="5" required>
+  </div>
+  <div ng-class="{'has-error': form.post.$invalid && form.post.$touched, 'has-success' : form.post.$valid && form.post.$touched}">
+    <label for="body">Body</label>
+    <textarea id="body" name="post" class="form-control" ng-model="$ctrl.post.body" ng-minlength="5" required></textarea>
+  </div>
+  <div ng-class="{'has-error': form.author.$invalid && form.author.$touched, 'has-success' : form.author.$valid && form.author.$touched}">
+    <label for="author">Author</label>
+    <input id="author" name="author" class="form-control" ng-model="$ctrl.post.author" ng-minlength="5" required>
+  </div>
+  <div ng-class="{'has-error': form.image_url.$invalid && form.image_url.$touched, 'has-success' : form.image_url.$valid && form.image_url.$touched}">
+    <label for="image-url">Image URL</label>
+    <input id="image-url" name="image_url" class="form-control" type="url" ng-model="$ctrl.post.image_url">
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" ng-click="$ctrl.editPost($ctrl.post)" ng-disabled="form.$invalid">
+      Update
+    </button>
+  </div>
+</form>
